@@ -1,6 +1,12 @@
 // Create page Router and active Link 
 const global = {
   currentPage: window.location.pathname,
+  search: {
+    term: '',
+    type: '',
+    page: 1,
+    totaPages: 1
+  }
 };
 
 // Display 20 most popular movies
@@ -225,6 +231,22 @@ function displayBackgroundImage(type, backgroundPath) {
   }
 }
 
+// search Movies/Shows
+
+async function search() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+
+  global.search.type = urlParams.get('type');
+  global.search.term = urlParams.get('search-term');
+
+  if(global.search.term !== '' && global.search.term !== null) {
+    // to do = make request and display results
+  } else {
+    showAlert('Please enter a search term');
+  }
+}
+
 // Display Slider Movies
 
 async function displaySlider() {
@@ -317,6 +339,17 @@ function highlightActiveLink() {
   });
 }
 
+// Alert function
+
+function showAlert(message, className) {
+  const alertEl = document.createElement('div');
+  alertEl.classList.add('alert', className);
+  alertEl.appendChild(document.createTextNode(message));
+  document.querySelector('#alert').appendChild(alertEl);
+
+  setTimeout(() => alertEl.remove(), 3000);
+}
+
 // Functions aad commas to number . Search on stackoverflow form regular expression
 
 function addCommasToNumber(number) {
@@ -343,7 +376,7 @@ function init() {
       displayShowsDetails();
       break;
     case '/search.html':
-      console.log('Search');
+      search();
       break;
 
   }
