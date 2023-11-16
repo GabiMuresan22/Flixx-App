@@ -6,7 +6,11 @@ const global = {
     type: '',
     page: 1,
     totaPages: 1
-  }
+  },
+  api: {
+    apiKey: 'a0721dedda42c3f1a613fe69b8ad65c9',
+    apiURL: 'https://api.themoviedb.org/3/',
+  },
 };
 
 // Display 20 most popular movies
@@ -241,7 +245,8 @@ async function search() {
   global.search.term = urlParams.get('search-term');
 
   if(global.search.term !== '' && global.search.term !== null) {
-    // to do = make request and display results
+    const results = await searchAPIData();
+    console.log(results);
   } else {
     showAlert('Please enter a search term');
   }
@@ -253,7 +258,11 @@ async function displaySlider() {
   const { results } = await fetchAPIData('movie/now_playing');
 
 results.forEach((movie) => {
+  
+  // Create a new div
   const div = document.createElement('div');
+
+  // Add swiper class
   div.classList.add('swiper-slide');
 
   div.innerHTML = ` 
@@ -264,7 +273,8 @@ results.forEach((movie) => {
         <i class="fas fa-star text-secondary"></i> ${movie.vote_average} / 10
       </h4>
     `;
-
+  
+    // Insert to DOM
     document.querySelector('.swiper-wrapper').appendChild(div);
 
     // Init Swiper
@@ -273,6 +283,8 @@ results.forEach((movie) => {
 
 });
 }
+
+// Function Init Swiper 
 
 function initSwiper() {
   const swiper = new Swiper ('.swiper', {
@@ -286,27 +298,46 @@ function initSwiper() {
      },
      breakpoints: {
       500: {
-        slidesPerView: 2,
+        slidesPerView: 2
       },
       700: {
-        slidesPerView: 3,
+        slidesPerView: 3
       },
       1200: {
-        slidesPerView: 4,
+        slidesPerView: 4
       },
-     },
+     }
   });
 }
 
 // Fetch data from TMDb API
 
 async function fetchAPIData(endpoint) {
-  const API_KEY = 'a0721dedda42c3f1a613fe69b8ad65c9';
-  const API_URL = 'https://api.themoviedb.org/3/';
+  const API_KEY = global.api.apiKey;
+  const API_URL = global.api.apiURL;
 
   showSpinner();
 
   const response = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`);
+
+  const data = await response.json();
+
+  hideSpinner();
+
+  return data;
+
+}
+
+// Make Request To Search
+
+async function searchAPIData() {
+  const API_KEY = global.api.apiKey;
+  const API_URL = global.api.apiURL;
+
+  showSpinner();
+
+  const response = await fetch(
+    `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}`);
 
   const data = await response.json();
 
@@ -347,7 +378,8 @@ function showAlert(message, className) {
   alertEl.appendChild(document.createTextNode(message));
   document.querySelector('#alert').appendChild(alertEl);
 
-  setTimeout(() => alertEl.remove(), 3000);
+  // Remove alert button after 3s
+  setTimeout(() => alertEl.remove(), 3000); 
 }
 
 // Functions aad commas to number . Search on stackoverflow form regular expression
