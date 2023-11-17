@@ -18,35 +18,34 @@ const global = {
 async function displayPopularMovies() {
   const { results } = await fetchAPIData('movie/popular');
   
-  results.forEach(movie => {
+  results.forEach((movie) => {
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
-    <a href="movie-details.html?id=${movie.id}">
-      ${
-        movie.poster_path
-        ? `<img
-        src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
-        class="card-img-top"
-        alt="${movie.title}"
-      />` 
-      :
-      `<img
-      src="../images/no-image.jpg"
-      class="card-img-top"
-      alt="${movie.title}"
-    />`
-      }
-    </a>
-    <div class="card-body">
-      <h5 class="card-title">${movie.title}</h5>
-      <p class="card-text">
-        <small class="text-muted">${movie.release_date}</small>
-      </p>
-    </div>
-  `;
+          <a href="movie-details.html?id=${movie.id}">
+            ${
+              movie.poster_path
+                ? `<img
+              src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
+              class="card-img-top"
+              alt="${movie.title}"
+            />`
+                : `<img
+            src="../images/no-image.jpg"
+            class="card-img-top"
+            alt="${movie.title}"
+          />`
+            }
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">${movie.title}</h5>
+            <p class="card-text">
+              <small class="text-muted">Release: ${movie.release_date}</small>
+            </p>
+          </div>
+        `;
 
-  document.querySelector('#popular-movies').appendChild(div);
+    document.querySelector('#popular-movies').appendChild(div);
   });
 }
 
@@ -55,7 +54,7 @@ async function displayPopularMovies() {
 async function displayPopularShows() {
   const { results } = await fetchAPIData('tv/popular');
   
-  results.forEach(show => {
+  results.forEach((show) => {
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
@@ -241,16 +240,62 @@ async function search() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
 
+  // Add the type and term to the global object
   global.search.type = urlParams.get('type');
   global.search.term = urlParams.get('search-term');
 
   if(global.search.term !== '' && global.search.term !== null) {
-    const results = await searchAPIData();
-    console.log(results);
-  } else {
-    showAlert('Please enter a search term');
-  }
+    const { results, total_pages, page } = await searchAPIData();
+
+    if (results.length === 0) {
+      showAlert('No results found');
+      return;
+    }
+
+    displaySearchResults(results);
+
+    // Clear the input
+    document.querySelector('#search-term').value = '';
+   } else {
+    showAlert('Please enter a search term')
+   }
+
 }
+
+// Function Display Search Results 
+
+function displaySearchResults(results) {
+  results.forEach((result) => {
+    const div = document.createElement('div');
+    div.classList.add('card');
+    div.innerHTML = `
+          <a href="${global.search.type}-details.html?id=${result.id}">
+            ${
+              result.poster_path
+                ? `<img
+              src="https://image.tmdb.org/t/p/w500/${result.poster_path}"
+              class="card-img-top"
+              alt="${global.search.type === 'movie' ? result.title : result.name}"
+            />`
+                : `<img
+            src="../images/no-image.jpg"
+            class="card-img-top"
+            alt="${global.search.type === 'movie' ? result.title : result.name}"
+          />`
+            }
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">${global.search.type === 'movie' ? result.title : result.name}</h5>
+            <p class="card-text">
+              <small class="text-muted">Release: ${global.search.type === 'movie' ? result.release_date : result.first_air_date}</small>
+            </p>
+          </div>
+        `;
+
+    document.querySelector('#search-results').appendChild(div);
+  });
+}
+
 
 // Display Slider Movies
 
@@ -372,7 +417,7 @@ function highlightActiveLink() {
 
 // Alert function
 
-function showAlert(message, className) {
+function showAlert(message, className = 'error') {
   const alertEl = document.createElement('div');
   alertEl.classList.add('alert', className);
   alertEl.appendChild(document.createTextNode(message));
