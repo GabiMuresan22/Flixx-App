@@ -5,7 +5,8 @@ const global = {
     term: '',
     type: '',
     page: 1,
-    totaPages: 1
+    totaPages: 1,
+    totalResults: 0
   },
   api: {
     apiKey: 'a0721dedda42c3f1a613fe69b8ad65c9',
@@ -234,7 +235,7 @@ function displayBackgroundImage(type, backgroundPath) {
   }
 }
 
-// search Movies/Shows
+// Search Movies/Shows
 
 async function search() {
   const queryString = window.location.search;
@@ -245,7 +246,12 @@ async function search() {
   global.search.term = urlParams.get('search-term');
 
   if(global.search.term !== '' && global.search.term !== null) {
-    const { results, total_pages, page } = await searchAPIData();
+    const { results, total_pages, page, total_results } = await searchAPIData();
+
+    global.search.page = page;
+    global.search.totalPages = total_pages;
+    global.search.totalResults = total_results;
+
 
     if (results.length === 0) {
       showAlert('No results found');
@@ -292,9 +298,28 @@ function displaySearchResults(results) {
           </div>
         `;
 
+    document.querySelector('#search-results-heading').innerHTML = `<h2>${results.length} of ${global.search.totalResults} Results for ${global.search.term}</h2>`    
+
     document.querySelector('#search-results').appendChild(div);
   });
+
+  displayPagination();
+
 }
+
+// Create & Display Pagination For Search
+
+function displayPagination() {
+  const div = document.createElement('div');
+  div.classList.add('pagination');
+  div.innerHTML = `<button class="btn btn-primary" id="prev">Prev</button>
+  <button class="btn btn-primary" id="next">Next</button>
+  <div class="page-counter">${global.search.page} of ${global.search.totalPages}</div>`;
+
+  document.querySelector('#pagination').appendChild(div);
+}
+
+
 
 
 // Display Slider Movies
