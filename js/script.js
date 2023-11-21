@@ -496,7 +496,6 @@ function addCommasToNumber(number) {
 
 function init() {
   switch(global.currentPage) {
-    case '#':
     case '/' :
     case '/index.html':
       displaySlider();
