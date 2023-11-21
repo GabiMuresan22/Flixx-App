@@ -373,7 +373,7 @@ results.forEach((movie) => {
         <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" />
       </a>
       <h4 class="swiper-rating">
-        <i class="fas fa-star text-secondary"></i> ${movie.vote_average} / 10
+        <i class="fas fa-star text-secondary"></i> ${movie.vote_average.toFixed(1)} / 10
       </h4>
     `;
   

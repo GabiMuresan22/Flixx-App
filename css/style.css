@@ -216,6 +216,7 @@ section h2 {
 }
 
 /* Movie Details */
+
 .details-top {
   display: flex;
   justify-content: space-between;
@@ -246,6 +247,7 @@ section h2 {
 }
 
 /* Search */
+
 .search {
   padding: 60px;
   margin-bottom: 40px;
@@ -336,4 +338,13 @@ section h2 {
 
 .error {
   background: red;
+}
+
+/* Media Queries */
+
+@media (max-width: 700px) {
+  .details-top {
+    flex-direction: column;
+    align-items: center;
+  }
 }
