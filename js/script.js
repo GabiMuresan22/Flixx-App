@@ -254,7 +254,7 @@ async function search() {
 
 
     if (results.length === 0) {
-      showAlert('No results found');
+      alertMessage.showAlert('No results found');
       return;
     }
 
@@ -263,7 +263,7 @@ async function search() {
     // Clear the input
     document.querySelector('#search-term').value = '';
    } else {
-    showAlert('Please enter a search term')
+    alertMessage.showAlert('Please enter a search term');
    }
 
 }
@@ -473,17 +473,46 @@ function highlightActiveLink() {
   });
 }
 
-// Alert function
+// // Alert function
 
-function showAlert(message, className = 'error') {
-  const alertEl = document.createElement('div');
-  alertEl.classList.add('alert', className);
-  alertEl.appendChild(document.createTextNode(message));
-  document.querySelector('#alert').appendChild(alertEl);
+// function showAlert(message, className = 'error') {
+//   const alertEl = document.createElement('div');
+//   alertEl.classList.add('alert', className);
+//   alertEl.appendChild(document.createTextNode(message));
+//   document.querySelector('#alert').appendChild(alertEl);
 
-  // Remove alert button after 3s
-  setTimeout(() => alertEl.remove(), 3000); 
+//   // Remove alert button after 3s
+//   setTimeout(() => alertEl.remove(), 3000); 
+// }
+
+// Alert Function Class
+
+class AlertMessage {
+  // constructor to initialize alert container
+  constructor(alertContainerId) {
+    this.alertContainerId = alertContainerId;
+  }
+
+  // Method to show alert
+  showAlert(message, className = 'error') {
+    const alertEl = document.createElement('div');
+    alertEl.classList.add('alert', className);
+    alertEl.appendChild(document.createTextNode(message));
+    document.querySelector(`#${this.alertContainerId}`).appendChild(alertEl);
+
+    // Remove alert after 3 seconds
+    setTimeout(() => this.removeAlert(alertEl), 3000);
+  }
+
+  // Method to remove alert
+  removeAlert(alertElement) {
+    alertElement.remove();
+  }
 }
+
+const alertMessage = new AlertMessage('alert');
+
+
 
 // Functions aad commas to number . Search on stackoverflow form regular expression
 
@@ -518,5 +547,6 @@ function init() {
 
   highlightActiveLink();
 }
+
 
 document.addEventListener('DOMContentLoaded', init);
