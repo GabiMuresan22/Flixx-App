@@ -485,6 +485,7 @@ function highlightActiveLink() {
 //   setTimeout(() => alertEl.remove(), 3000); 
 // }
 
+
 // Alert Function Class
 
 class AlertMessage {
@@ -511,8 +512,6 @@ class AlertMessage {
 }
 
 const alertMessage = new AlertMessage('alert');
-
-
 
 // Functions aad commas to number . Search on stackoverflow form regular expression
 
