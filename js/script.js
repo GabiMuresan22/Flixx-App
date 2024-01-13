@@ -14,6 +14,33 @@ const global = {
   },
 };
 
+// Alert Function Class
+
+class AlertMessage {
+  // constructor to initialize alert container
+  constructor(alertContainerId) {
+    this.alertContainerId = alertContainerId;
+  }
+
+  // Method to show alert
+  showAlert(message, className = 'error') {
+    const alertEl = document.createElement('div');
+    alertEl.classList.add('alert', className);
+    alertEl.appendChild(document.createTextNode(message));
+    document.querySelector(`#${this.alertContainerId}`).appendChild(alertEl);
+
+    // Remove alert after 3 seconds
+    setTimeout(() => this.removeAlert(alertEl), 3000);
+  }
+
+  // Method to remove alert
+  removeAlert(alertElement) {
+    alertElement.remove();
+  }
+}
+
+const alertMessage = new AlertMessage('alert');
+
 // Display 20 most popular movies
 
 async function displayPopularMovies() {
@@ -473,47 +500,7 @@ function highlightActiveLink() {
   });
 }
 
-// // Alert function
-
-// function showAlert(message, className = 'error') {
-//   const alertEl = document.createElement('div');
-//   alertEl.classList.add('alert', className);
-//   alertEl.appendChild(document.createTextNode(message));
-//   document.querySelector('#alert').appendChild(alertEl);
-
-//   // Remove alert button after 3s
-//   setTimeout(() => alertEl.remove(), 3000); 
-// }
-
-
-// Alert Function Class
-
-class AlertMessage {
-  // constructor to initialize alert container
-  constructor(alertContainerId) {
-    this.alertContainerId = alertContainerId;
-  }
-
-  // Method to show alert
-  showAlert(message, className = 'error') {
-    const alertEl = document.createElement('div');
-    alertEl.classList.add('alert', className);
-    alertEl.appendChild(document.createTextNode(message));
-    document.querySelector(`#${this.alertContainerId}`).appendChild(alertEl);
-
-    // Remove alert after 3 seconds
-    setTimeout(() => this.removeAlert(alertEl), 3000);
-  }
-
-  // Method to remove alert
-  removeAlert(alertElement) {
-    alertElement.remove();
-  }
-}
-
-const alertMessage = new AlertMessage('alert');
-
-// Functions aad commas to number . Search on stackoverflow form regular expression
+// Functions add commas to number . Search on stackoverflow for regular expression
 
 function addCommasToNumber(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -529,7 +516,7 @@ function init() {
       displaySlider();
       displayPopularMovies();
       break;
-    case '/shows':
+    case '/shows.html':
       displayPopularShows();
       break;
     case '/movie-details.html':
