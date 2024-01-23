@@ -512,7 +512,7 @@ function addCommasToNumber(number) {
 function init() {
   const page = global.currentPage;
 
-  if (["/", "index.html"].includes(page)) {
+  if (page.includes("index.html")) {
     displayPopularMovies();
     displaySlider();
   } else if (page.includes("shows")) {
@@ -527,33 +527,6 @@ function init() {
 
   highlightActiveLink();
 }
-
-// function init() {
-//   switch(global.currentPage) {
-//     case '/' :
-//     case '/index.html':
-//       displaySlider();
-//       displayPopularMovies();
-//       break;
-//     case '/shows.html':
-//       displayPopularShows();
-//       break;
-//     case '/movie-details.html':
-//       displayMovieDetails();
-//       break;
-//     case '/tv-details.html':
-//       displayShowsDetails();
-//       break;
-//     case '/search.html':
-//       search();
-//       break;
-
-//   }
-
-//   highlightActiveLink();
-// }
-
-
 
 
 document.addEventListener('DOMContentLoaded', init);
