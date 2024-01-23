@@ -512,7 +512,7 @@ function addCommasToNumber(number) {
 function init() {
   const page = global.currentPage;
 
-  if (page.includes("index")) {
+  if (page.includes("index.html")) {
     displayPopularMovies();
     displaySlider();
   } else if (page.includes("shows")) {
