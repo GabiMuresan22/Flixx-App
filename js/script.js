@@ -521,7 +521,7 @@ function init() {
   } else if (page.includes("movie-details")) {
     displayMovieDetails();
   } else if (page.includes("tv-details")) {
-    displayShowDetails();
+    displayShowsDetails();
   } else if (page.includes("search")) {
     search();
   }
