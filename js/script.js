@@ -515,12 +515,13 @@ function init() {
   if (page.includes("index.html")) {
     displayPopularMovies();
     displaySlider();
-  } else if (page.includes("shows")) {
+  }  
+  else if (page.includes("shows")) {
     displayPopularShows();
   } else if (page.includes("movie-details")) {
     displayMovieDetails();
   } else if (page.includes("tv-details")) {
-    displayShowsDetails();
+    displayShowDetails();
   } else if (page.includes("search")) {
     search();
   }
