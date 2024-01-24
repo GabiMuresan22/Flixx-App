@@ -515,7 +515,9 @@ function init() {
   if (page.includes("index.html")) {
     displayPopularMovies();
     displaySlider();
-  }  
+  }  else if (page.includes("movies.html")) {
+    displayPopularMovies();
+  }
   else if (page.includes("shows")) {
     displayPopularShows();
   } else if (page.includes("movie-details")) {
